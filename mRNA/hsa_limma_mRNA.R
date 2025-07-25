@@ -23,10 +23,10 @@ library(limma)
 
 ## local paths - define input+output directories ##
 
-setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA")
 
-Input.path <- "C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA/input-files"
-Output.path <- "C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA/output-files"
+
+Input.path <- ""
+Output.path <- ""
 
 # source fns --------------------------------------------------------------
 
