@@ -132,11 +132,6 @@ conserved_table_mmu_hsa <- blast_hsa_family |>
   dplyr::filter(q_miRNA %in% conserved_miRNAs_mmu_hsa ) |>
   dplyr::filter(q_species != "xla" & s_species != "xla")
 
-#blast_df_mmu_hsa <- conserved_table_mmu_hsa |>
-#  mutate(pair = case_when(
-#    (species == "hsa" & s_species == "mmu") | (species == "mmu" & s_species == "hsa") ~ "hsa_vs_mmu",
-#    TRUE ~ NA_character_
-#  ))
 
 #### pairwise comparisons - filter for unique instances of homology -------------
 
@@ -241,11 +236,6 @@ conserved_table_mmu_hsa <- blast_hsa_family |>
   dplyr::filter(q_miRNA %in% conserved_miRNAs_mmu_hsa ) |>
   dplyr::filter(q_species != "xla" & s_species != "xla")
 
-#blast_df_mmu_hsa <- conserved_table_mmu_hsa |>
-#  mutate(pair = case_when(
-#    (species == "hsa" & s_species == "mmu") | (species == "mmu" & s_species == "hsa") ~ "hsa_vs_mmu",
-#    TRUE ~ NA_character_
-#  ))
 
 ## pairwise comparison - filter for unique instances of homology -----------------
 
