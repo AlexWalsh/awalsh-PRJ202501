@@ -8,18 +8,15 @@ rm(list=ls()); gc()
 library(tidyverse); library(readxl); library(janitor)
 library(glue);      library(scales); library(here) 
 
-if(!require(tidysteps)){
-  devtools::install_github('bansell/tidysteps'); 
-  library(tidysteps)}
 
 theme_set(theme_minimal())
-fix_tidyverse_conflicts()
+
 
 default_grey <- "#595959"
 
-here()
 
 library(edgeR)
+library(limma)
 
 
 
