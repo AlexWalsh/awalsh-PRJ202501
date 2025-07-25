@@ -18,7 +18,7 @@ blast <- read.delim("blastn/allVall_noxtr.out") |> mutate(across(where(is.charac
 
 # remove rows where species in qseqid and sseqid are the same -  ---------------------
 
-blast_filter <- blast[ sub("-.*", "", blast[["qseqid"]]) != sub("-.*", "", blast[["sseqid"]]), ] # filters out same species
+blast_filter <- blast[ sub("-.*", "", blast[["qseqid"]]) != sub("-.*", "", blast[["sseqid"]]), ] # filters out same species comparisons
 
 # filter for e value < 0.01 and annotate species names for query and subject species -------------
 
