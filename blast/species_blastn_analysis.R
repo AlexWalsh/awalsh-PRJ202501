@@ -65,9 +65,9 @@ blast_df_unique <- conserved_table |>
 
 ## read in DE datasets - limma treat  datasets ------------------------
 
-hsa_RDS <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA/output-files/hsa_sRNA_lm_res.rds") 
+hsa_RDS <- readRDS("hsa_sRNA_lm_res.rds") 
 
-xla_RDS <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/xenopus/xeno_sRNA_lm_res.rds")
+xla_RDS <- readRDS("xeno_sRNA_lm_res.rds")
 
 hsa_treat <- hsa_RDS$tt_treat
 
