@@ -1,7 +1,6 @@
 # R.4.3.1
 #### network analysis, miRNA, mRNA #####
 
-setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA-miRNA-network")
 
 library(dplyr)
 library(tidyverse)
@@ -13,13 +12,11 @@ library(multiMiR)
 
 corr.data <- readRDS("hsa_miRNA_mRNA_microglia.corr.rds")
 
-pearson.corr <- corr.data$r
-
-pearson.corr <- t(pearson.corr) #transpose to get miRNAs as header names
+pearson.corr <- t(corr.data$r) #transpose to get miRNAs as header names
 
 ### read in enriched microglia miRNAs ---------------------------
 
-lm_res <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA/output-files/hsa_sRNA_lm_res.rds")
+lm_res <- readRDS("hsa_sRNA_lm_res.rds")
 
 ## subset for significantly enriched miRNAs in microglia - logFC > 1 and adj.p.val <0.05 -----------
 
