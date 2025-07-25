@@ -30,9 +30,9 @@ library(strex)
 #for local work#
 # Define paths #
 
-setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA")
-Input.path <- "C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA/input-files"
-Output.path <- "C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA/output-files"
+setwd("")
+Input.path <- ""
+Output.path <- ""
 
 # source fns --------------------------------------------------------------
 
