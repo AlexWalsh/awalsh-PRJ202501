@@ -22,7 +22,6 @@ fix_tidyverse_conflicts()
 
 default_grey <- "#595959"
 
-here()
 
 library(edgeR)
 library(strex)
@@ -183,40 +182,7 @@ saveRDS(dat_known_dedup, 'counts_dedup.Rds')
 
 
 
-## quick corr test of raw counts dat vs dat_known_only ##
-# raw_hsa_known_novel_counts_tbl_novel_dataset.rds compared tohsa_known_miRNA_counts.rds #
 
-
-dat <- readRDS(paste(Input.path, "raw_hsa_known_novel_counts_tbl_novel_dataset.rds", sep = "/")) |> select(-c(total_read_count))
-colnames(dat_knownonly) <- colnames
-
-dat_knownonly <- readRDS(paste(Input.path, "hsa_known_miRNA_counts.rds", sep = "/")) |> select(-c(total_read_count))
-colnames(dat_knownonly) <- colnames
-
-dat
-dat_knownonly
-
-
-dat <- dat |> mutate(read_count = rowSums(across(4:48))) |>
-  relocate(read_count, .after = mi_rna)
-
-dat_knownonly <- dat_knownonly |> mutate(read_count = rowSums(across(4:48))) |>
-  relocate(read_count, .after = mi_rna)
-
-
-merged_df <- inner_join(dat, dat_knownonly, by = "mi_rna", suffix = c("_novelknown", "_known"))
-
-library(ggplot2)
-
-ggplot(merged_df, aes(x = read_count_novelknown, y = read_count_known)) +
-  geom_point() +
-  geom_smooth(method = "lm", color = "red") +
-  labs(x = "Read Count (knownnovel)", y = "Read Count (known)") +
-  ggtitle("Corr")
-
-cor(merged_df$read_count_novelknown, merged_df$read_count_known) # 0.9997418 - basically identical
-
-### dataframes are different sizes, known only has less 900 compared to 4829, just check something weird isnt happening
 
 dat_unique_knownonly <- unique(dat_knownonly$mi_rna)
 
