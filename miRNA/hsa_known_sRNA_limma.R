@@ -26,7 +26,7 @@ library(limma)
 
 # source fns --------------------------------------------------------------
 
-setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA")
+setwd("")
 
 source('input-files/as_tibble_rnm.R')
 neglog <- function(x){-log10(x)}
