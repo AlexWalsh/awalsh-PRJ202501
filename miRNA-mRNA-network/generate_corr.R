@@ -1,6 +1,6 @@
 # R 4.3.1 ---------------------------------------------------
 
-setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA-miRNA-network")
+
 
 #### corr.test  ####
 
@@ -11,8 +11,8 @@ library(psych)
 ### load in rds file ###
 
 
-miRNA.lcpm <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/smRNA/output-files/hsa_smRNA_lcpm_resid.rds")
-mRNA.lcpm <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_analysis/human/mRNA/output-files/hsa_mRNA_lcpm_resid.rds")
+miRNA.lcpm <- readRDS("hsa_smRNA_lcpm_resid.rds")
+mRNA.lcpm <- readRDS("hsa_mRNA_lcpm_resid.rds")
 
 
 ###format data frames ---------------------------------------------
