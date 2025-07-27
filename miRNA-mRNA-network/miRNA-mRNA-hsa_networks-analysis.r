@@ -117,7 +117,7 @@ CD45Bulk.validated.targets.pearson <- cbind(CD45Bulk.validated.targets, as.numer
 
 CD45Bulk.validated.targets.pearson <- CD45Bulk.validated.targets.pearson %>% 
   rename(
-    R_value = "as.numeric(CD45Bulkoutput)",
+    r_value = "as.numeric(CD45Bulkoutput)",
     Pvalue = CD45Bulkoutput.p.values,
     Adj.P.value = CD45BulkAdj.p.val)
 
@@ -125,11 +125,11 @@ CD45Bulk.validated.targets.pearson <- CD45Bulk.validated.targets.pearson %>%
 CD45Bulk.validated.targets.pearson <- as_tibble(CD45Bulk.validated.targets.pearson)
 
 
-### remove R values of zero and then convert to R^2 ###
+### remove r values of zero and then convert to R^2 ###
 
 CD45Bulk.validated.targets.pearson.final <- CD45Bulk.validated.targets.pearson %>% 
-  filter(R_value != 0) %>%
-  mutate(R_squared = R_value ^ 2)
+  filter(r_value != 0) %>%
+  mutate(R_squared = r_value ^ 2)
 
 
 ### filter on adj. p.value (0.05)  ###
@@ -238,7 +238,7 @@ CD45Bulk.predicted.targets.pearson <- cbind(CD45Bulk.predicted.targets, as.numer
 
 CD45Bulk.predicted.targets.pearson <- CD45Bulk.predicted.targets.pearson %>% 
   rename(
-    R_value = "as.numeric(CD45Bulkoutput)",
+    r_value = "as.numeric(CD45Bulkoutput)",
     Pvalue = CD45Bulkoutput.p.values,
     Adj.P.value = CD45BulkAdj.p.val)
 
@@ -246,11 +246,11 @@ CD45Bulk.predicted.targets.pearson <- CD45Bulk.predicted.targets.pearson %>%
 CD45Bulk.predicted.targets.pearson <- as_tibble(CD45Bulk.predicted.targets.pearson)
 
 
-### remove R values of zero and then convert to R^2 ###
+### remove r values of zero and then convert to R^2 ###
 
 CD45Bulk.predicted.targets.pearson.final <- CD45Bulk.predicted.targets.pearson %>% 
-  filter(R_value != 0) %>%
-  mutate(R_squared = R_value ^ 2)
+  filter(r_value != 0) %>%
+  mutate(R_squared = r_value ^ 2)
 
 
 ### filter on adj. p.value (0.05)  ###
