@@ -5,8 +5,7 @@ mRNA analysis
 1.hsa_limma_mRNA.R
 
 cibersort analysis
-1. preprocess_cibersort
-
+1. preprocess_cibersort.R
 
 miRNA analysis
 1. counts_dedup.R
