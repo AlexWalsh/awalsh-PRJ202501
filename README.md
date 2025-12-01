@@ -5,7 +5,7 @@ human microglia miRNA mRNA analysis
 DE analysis
 
 **mRNA analysis**  
-Input file: hsa_mRNA_genecounts
+Input file: hsa_mRNA_genecounts  
 1.hsa_limma_mRNA.R
 Format raw gene counts
 
