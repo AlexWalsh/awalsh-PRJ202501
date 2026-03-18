@@ -14,11 +14,12 @@ setwd("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submission/final_an
 
 # read in blast results ----------------------------
 
-blast <- read.delim("blastn/allVall_noxtr.out") |> mutate(across(where(is.character), ~ gsub("_", "-", .))) #convert _ in name to -
+#convert _ in name to -
+blast <- read.delim("blastn/allVall_noxtr.out") |> mutate(across(where(is.character), ~ gsub("_", "-", .))) 
 
 # remove rows where species in qseqid and sseqid are the same -  ---------------------
 
-blast_filter <- blast[ sub("-.*", "", blast[["qseqid"]]) != sub("-.*", "", blast[["sseqid"]]), ] # filters out same species comparisons
+blast_filter <- blast[ sub("-.*", "", blast[["qseqid"]]) != sub("-.*", "", blast[["sseqid"]]), ] 
 
 # filter for e value < 0.01 and annotate species names for query and subject species -------------
 
@@ -34,7 +35,7 @@ blast_filter_e.01_summary <- blast_filter |>
 
 ### keep only matching family miRNA names -------------------
 
-blast_hsa_family <- blast_filter_e.01_summary |> dplyr::filter(q_miRNA == s_miRNA) # keeps only matching family names
+blast_hsa_family <- blast_filter_e.01_summary |> dplyr::filter(q_miRNA == s_miRNA) 
 
 
 ## conserved miRNAs - keep only miRNAs that are conserved in all 3 species  ------------------------------------
@@ -56,12 +57,14 @@ conserved_table <- blast_hsa_family |>
 
 ### pairwise comparisons -------------------------------
 
+# Filter for unique instances of each homology pair
+
 blast_df_unique <- conserved_table |>
   dplyr::filter(
     (q_species == "hsa" & s_species == "mmu") |
       (q_species == "hsa" & s_species == "xla") |
       (q_species == "mmu" & s_species == "xla")
-  ) # this filters for unique instances of each homology pair
+  ) 
 
 ## read in DE datasets - limma treat  datasets ------------------------
 
