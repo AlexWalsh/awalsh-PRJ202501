@@ -184,6 +184,8 @@ saveRDS(dat_known_dedup, 'counts_dedup.Rds')
 
 
 
+
+
 dat_unique_knownonly <- unique(dat_knownonly$mi_rna)
 
 dat_unique1 <- dat |> dplyr::filter(!mi_rna %in% dat_unique_knownonly)
