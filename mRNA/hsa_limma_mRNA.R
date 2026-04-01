@@ -8,22 +8,25 @@ rm(list=ls()); gc()
 library(tidyverse); library(readxl); library(janitor)
 library(glue);      library(scales); library(here) 
 
+if(!require(tidysteps)){
+  devtools::install_github('bansell/tidysteps'); 
+  library(tidysteps)}
 
 theme_set(theme_minimal())
-
+fix_tidyverse_conflicts()
 
 default_grey <- "#595959"
 
+here()
 
 library(edgeR)
 library(limma)
 
 
 
-
 ## local paths - define input+output directories ##
 
-
+setwd("")
 
 Input.path <- ""
 Output.path <- ""
@@ -62,7 +65,7 @@ write_delim(dat, file.path(Output.path, "hsa_rawcounts_cibersort.txt"), delim = 
 # read in metadata -------------------------------------------
 
 jkey <- read_tsv(file.path(Input.path, "hsa_sampleinfo.txt"))
-jkey$Age <- sqrt(jkey$Age)
+jkey$Age_sqrt <- sqrt(jkey$Age)
 
 # annotate gene IDs --------------------------------------
 
@@ -159,18 +162,18 @@ print(ggcorrplot)
 
 library(tidyheatmaps)
 
-cpm(d_norm,log=T) |> as_tibble() |> 
-   mutate(id=rownames(d_norm)) |> relocate(id) |> 
-   gather(key,value,-1) |> 
-   tidyheatmap(
-   rows=id,
-   columns=key,values=value,
-   cluster_rows = T,
-   cluster_cols = T ,annotation_names_row = F)   
+#cpm(d_norm,log=T) |> as_tibble() |> 
+#   mutate(id=rownames(d_norm)) |> relocate(id) |> 
+#   gather(key,value,-1) |> 
+#   tidyheatmap(
+#   rows=id,
+#   columns=key,values=value,
+#   cluster_rows = T,
+#   cluster_cols = T ,annotation_names_row = F)   
 
 # design -------------------------------------------------------------------
 
-Age <- jkey$Age
+Age <- jkey$Age_sqrt
 Type <- as.factor(jkey$Type)
 Sex <- as.factor(jkey$Sex)
 Region <- gsub(" ", "_", jkey$Region) |> as.factor()
@@ -249,7 +252,7 @@ saveRDS(v$E |> as_tibble_rnm('geneid'),
 res <- list()
 res$d_norm <- d_norm
 res$design_svs <- design_svs
-res$lcpm_resid <- v$E |> as_tibble() 
+res$lcpm_resid <- v$E |> as_tibble() |> mutate(geneID = v$genes$gene_name) |> mutate(ensembl=rownames(v$E)) |> relocate(ensembl) |> relocate(geneID)  
 
 res$tt <- topTable(efit,coef = 1, n=Inf) |> as_tibble()
 
@@ -276,3 +279,154 @@ writeData(wb,sheet='DEGs_FC_treat', x= res$tt_treat) #|> filter(adj.P.Val<0.05))
 saveWorkbook(wb,file=file.path(Output.path, "hsa_mRNA_output.xlsx"),overwrite = T) 
 
 writeLines(capture.output(sessionInfo()), "sessioninfo.txt")
+
+
+## MDS plots
+
+# MDS ------------------------
+
+### MDS plots ####
+
+plotMDS(d_norm)
+title("MDS")
+
+par(mar = c(5,4,4,8))
+
+Type <- factor(jkey$Type)
+#Age <- factor(jkey$Age.group)
+#Age <- factor(Age, levels = c("Childhood", "Adolescence", "Adulthood"))
+Sex <- factor(jkey$Sex)
+Disease <- factor(jkey$Disease)
+Region <- factor(jkey$Region)
+ID <- factor(jkey$ID)
+
+
+## Type -  ##
+
+col.type <- c("red", "blue")[Type]
+pch.type <- c(16,16)[Type]
+
+pdf(paste(Output.path, "MDS_AgeGroup_Type_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, pch=pch.type, col = col.type, cex=1.5)
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = c(15), col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+title("MDS - Type")
+
+dev.off()
+
+## Sex ##
+col.type <- c("red", "blue")[Type]
+pch.sex <- c(16,17)[Sex]
+
+
+pdf(paste(Output.path, "MDS_SexType_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type, pch=pch.sex , cex=1.5)
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Sex)), title = "Sex", pch = c(16,17), xpd = TRUE, inset = c(-0.15, 0))
+title("MDS - Sex/Type")
+
+dev.off()
+
+
+## Disease ##
+
+col.type <- c("red", "blue")[Type]
+pch.disease <- c(15,16,17,18)[Disease]
+
+pdf(paste(Output.path, "MDS_Disease_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type, pch=pch.disease, cex=1.5)
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Disease)), title = "Disease", pch = c(15,16,17,18), xpd = TRUE, inset = c(-0.15, 0))
+title("MDS - Disease/Type")
+
+dev.off()
+
+## Region ##
+col.type <- c("red", "blue")[Type]
+pch.region <- c(15,16,17,18,21)[Region]
+
+
+pdf(paste(Output.path, "MDS_Region_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type , pch=pch.region, cex=1.5)
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Region)), title = "Region", pch = c(15,16,17,18,21), xpd = TRUE, inset = c(-0.15, 0))
+title("MDS - Region/Type")
+
+dev.off()
+
+### PCA
+
+## Type -  ##
+
+col.type <- c("red", "blue")[Type]
+pch.type <- c(16,16)[Type]
+
+pdf(paste(Output.path, "PCA_AgeGroup_Type_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, pch=pch.type, col = col.type, cex=1.5, gene.selection = "common")
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = c(15), col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+title("PCA - Type")
+
+dev.off()
+
+## Sex ##
+col.type <- c("red", "blue")[Type]
+pch.sex <- c(16,17)[Sex]
+
+
+pdf(paste(Output.path, "PCA_SexType_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type, pch=pch.sex , cex=1.5, gene.selection = "common")
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Sex)), title = "Sex", pch = c(16,17), xpd = TRUE, inset = c(-0.15, 0))
+title("PCA - Sex/Type")
+
+dev.off()
+
+
+## Disease ##
+
+col.type <- c("red", "blue")[Type]
+pch.disease <- c(15,16,17,18)[Disease]
+
+pdf(paste(Output.path, "PCA_Disease_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type, pch=pch.disease, cex=1.5, gene.selection = "common")
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Disease)), title = "Disease", pch = c(15,16,17,18), xpd = TRUE, inset = c(-0.15, 0))
+title("PCA - Disease/Type")
+
+dev.off()
+
+## Region ##
+col.type <- c("red", "blue")[Type]
+pch.region <- c(15,16,17,18,21)[Region]
+
+
+pdf(paste(Output.path, "PCA_Region_Plot.pdf", sep = "/"), width = 10, height = 10)
+
+par(mar = c(5,4,4,8))
+
+plotMDS(d_norm, col=col.type , pch=pch.region, cex=1.5, gene.selection = "common")
+legend("topright", legend = levels(as.factor(jkey$Type)), title = "Type", pch = 15, col = c("red", "blue"), xpd = TRUE, inset = c(-0.15, 0))
+legend("bottomright", legend = levels(as.factor(jkey$Region)), title = "Region", pch = c(15,16,17,18,21), xpd = TRUE, inset = c(-0.15, 0))
+title("PCA - Region/Type")
+
+dev.off()
