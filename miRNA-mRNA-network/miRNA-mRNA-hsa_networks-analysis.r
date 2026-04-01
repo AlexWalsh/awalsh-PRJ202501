@@ -383,8 +383,8 @@ age_res <- readRDS("C:/Users/alex_/Desktop/Work/2025/Human-microglia-work-submis
 
 ## Upregulated -----------
 
-up.list <- age_res$microglia_age_res %>% dplyr::filter(logFC > 0 & adj.P.Val < 0.05) %>% select(genes)
-down.list <- age_res$microglia_age_res %>% dplyr::filter(logFC < 0 & adj.P.Val < 0.05) %>% select(genes)
+up.list <- age_res$microglia_age_res %>% dplyr::filter(logFC > 0 & adj.P.Val < 0.05) %>% dplyr::select(genes)
+down.list <- age_res$microglia_age_res %>% dplyr::filter(logFC < 0 & adj.P.Val < 0.05) %>% dplyr::select(genes)
 
 ## multimiR -------------------------------------------
 
